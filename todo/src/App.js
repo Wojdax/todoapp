@@ -1,25 +1,46 @@
 import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
 
-function App() {
+export const App = () => {
+  const [todos, setTodos] = useState([{
+    text: "Wstac z lozka",
+    isDone: false
+  }])
+
+  const addTodo = (text) =>{
+    const newTodos = [...todos, {text}];
+    setTodos(newTodos);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Czesc Wojtek, rozpoczyna sie Twoja przygoda z reactem. Have fun.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='app'>
+      <div className='container'>
+        <h1 className='text-center mb-4'>Todo List</h1>
+        <FormTodo addTodo={addTodo} />
+        {todos.map((x)=>(
+          <div>{x.text}</div>
+          ))}
+      </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export const FormTodo = ({ addTodo }) => {
+  const [value, setValue] = useState("")
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!value) return
+    addTodo(value);
+    setValue("");
+  }
+
+  return (
+    <div>
+      <h3>Add Todo</h3>
+      <input type="text" value={value} onChange={e => setValue(e.target.value)}></input>
+      <button onClick={handleSubmit}>Submit</button>
+    </div>
+  )
+}
