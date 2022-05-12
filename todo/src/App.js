@@ -8,7 +8,12 @@ export const App = () => {
     isDone: false
   }])
 
-  const addTodo = (text) =>{
+  const addTodo2 = (text) =>{
+    const newTodos = [...todos, {text}];
+    setTodos(newTodos);
+  }
+
+  function addTodo(text){
     const newTodos = [...todos, {text}];
     setTodos(newTodos);
   }
