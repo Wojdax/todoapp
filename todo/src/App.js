@@ -1,5 +1,6 @@
 import './App.css';
 import { useState } from 'react';
+import { Input } from 'antd';
 
 import {
   EditOutlined,
@@ -11,7 +12,8 @@ export const App = () => {
     id: new Date().getTime(),
     title: "Obiad",
     descrption: "Lasagne i zupa ogórkowa",
-    isDone: false
+    isDone: false,
+    isEditable: false
   }])
 
   const addTodo = (todo) => {
@@ -19,10 +21,39 @@ export const App = () => {
     setTodos(newTodos);
   }
 
-  const markDone = (e) => {
+  const markDone = (id) => {
     const newTodos = todos.map((todo) => ({
       ...todo,
-      isDone: todo.id.toString() === e.target.id.toString() ? !todo.isDone : todo.isDone
+      isDone: todo.id === id ? !todo.isDone : todo.isDone
+    }))
+    setTodos(newTodos)
+  }
+
+  const handleDelete = (id) => {
+    const newTodos = todos.filter((todo) => todo.id !== id)
+    setTodos(newTodos)
+  }
+
+  const handleEdit = (id) => {
+    const newTodos = todos.map((todo) => ({
+      ...todo,
+      isEditable: todo.id === id ? !todo.isEditable : todo.isEditable
+    }))
+    setTodos(newTodos)
+  }
+
+  const handleToDoTitleChange = (id, e) => {
+    const newTodos = todos.map((todo) => ({
+      ...todo,
+      title: todo.id === id ? e.target.value : todo.title
+    }))
+    setTodos(newTodos)
+  }
+
+  const handleToDoDescriptionChange = (id, e) => {
+    const newTodos = todos.map((todo) => ({
+      ...todo,
+      descrption: todo.id === id ? e.target.value : todo.descrption
     }))
     setTodos(newTodos)
   }
@@ -34,13 +65,13 @@ export const App = () => {
         {todos.map((todo) => (
           <div key={todo.id}>
             <div>
-              <input type="checkbox" id={todo.id} key={todo.id} onClick={markDone} />
+              <input type="checkbox" id={todo.id} key={todo.id} onClick={() => markDone(todo.id)} />
             </div>
             <div>
-              <h4 className={todo.isDone ? 'line-through' : ''}>{todo.title}</h4>
-              <p className={todo.isDone ? 'line-through' : ''}>{todo.descrption}</p>
+              {<Input value={todo.title} disabled={!todo.isEditable} onChange={(e) => handleToDoTitleChange(todo.id, e)} className={(todo.isDone && !todo.isEditable) ? 'line-through' : ''} />}
+              <Input value={todo.descrption} disabled={!todo.isEditable} onChange={(e) => handleToDoDescriptionChange(todo.id, e)} className={todo.isDone && !todo.isEditable ? 'line-through' : ''} />
             </div>
-            <div><EditOutlined /><DeleteOutlined /></div>
+            <div><EditOutlined onClick={() => handleEdit(todo.id)} /><DeleteOutlined onClick={() => handleDelete(todo.id)} /></div>
           </div>
         ))}
       </div>
@@ -63,8 +94,8 @@ export const FormTodo = ({ addTodo }) => {
   return (
     <div>
       <h3>MOJE ZADANIA</h3>
-      <input placeholder='Tytuł' type="text" value={title} onChange={e => setTitle(e.target.value)}></input>
-      <input placeholder='Opis...' type="text" value={descrption} onChange={e => setDescription(e.target.value)}></input>
+      <Input placeholder='Tytuł' type="text" value={title} onChange={e => setTitle(e.target.value)}></Input>
+      <Input placeholder='Opis...' type="text" value={descrption} onChange={e => setDescription(e.target.value)}></Input>
       <button onClick={handleSubmit}>Dodaj</button>
     </div>
   )
