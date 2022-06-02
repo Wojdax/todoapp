@@ -14,6 +14,24 @@ export const App = () => {
     descrption: "Lasagne i zupa ogórkowa",
     isDone: false,
     isEditable: false
+  }, {
+    id: new Date().getTime()+1,
+    title: "Sprzątanie",
+    descrption: "Łazienka i mycie podłogi",
+    isDone: true,
+    isEditable: false
+  }, {
+    id: new Date().getTime()+2,
+    title: "Ogród",
+    descrption: "Zasadzić pomidory",
+    isDone: false,
+    isEditable: false
+  }, {
+    id: new Date().getTime()+3,
+    title: "Auto",
+    descrption: "odkurzyć",
+    isDone: false,
+    isEditable: false
   }])
 
   const addTodo = (todo) => {
