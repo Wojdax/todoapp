@@ -65,7 +65,7 @@ export const App = () => {
         {todos.map((todo) => (
           <div key={todo.id}>
             <div>
-              <input type="checkbox" id={todo.id} key={todo.id} onClick={() => markDone(todo.id)} />
+              <input type="checkbox" id={todo.id} key={todo.id} value={todo.isDone} onClick={() => markDone(todo.id)} />
             </div>
             <div>
               {<Input value={todo.title} disabled={!todo.isEditable} onChange={(e) => handleToDoTitleChange(todo.id, e)} className={(todo.isDone && !todo.isEditable) ? 'line-through' : ''} />}
